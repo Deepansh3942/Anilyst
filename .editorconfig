@@ -1,0 +1,8 @@
+# Editor
+.vscode/*
+!.vscode/extensions.json
+
+# Local env (examples are tracked)
+.env
+.env.local
+.env.*.local

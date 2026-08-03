@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: anilyst-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: anilyst
+      POSTGRES_PASSWORD: anilyst
+      POSTGRES_DB: anilyst
+    volumes:
+      - anilyst_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anilyst -d anilyst"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: anilyst-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - anilyst_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  anilyst_postgres_data:
+  anilyst_redis_data:
