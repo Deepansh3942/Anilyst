@@ -14,14 +14,17 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
     "clean": "rimraf dist"
   },
   "dependencies": {
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@anilyst/eslint-config": "workspace:*",
     "@anilyst/typescript-config": "workspace:*",
     "@types/node": "^22.14.1",
+    "eslint": "^9.24.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3"
   }

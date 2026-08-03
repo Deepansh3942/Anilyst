@@ -1,9 +1,4 @@
-export type WatchStatus =
-  | "WATCHING"
-  | "COMPLETED"
-  | "DROPPED"
-  | "PAUSED"
-  | "PLAN_TO_WATCH";
+export type WatchStatus = "WATCHING" | "COMPLETED" | "DROPPED" | "PAUSED" | "PLAN_TO_WATCH";
 
 export interface User {
   id: string;

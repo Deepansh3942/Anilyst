@@ -6,7 +6,7 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "clean": "rimraf .next"
   },
@@ -19,11 +19,13 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@anilyst/eslint-config": "workspace:*",
     "@anilyst/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.4",
     "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "eslint": "^9.24.0",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3"

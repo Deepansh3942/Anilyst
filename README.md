@@ -21,7 +21,8 @@ Anilyst/
 ├── packages/
 │   ├── types/        # Shared TypeScript types
 │   ├── validation/   # Shared Zod schemas
-│   ├── config/       # Shared ESLint / TS configs
+│   ├── config/       # Shared TypeScript configs
+│   ├── eslint-config/# Shared ESLint configs
 │   └── utils/        # Shared helpers
 ├── docker-compose.yml
 ├── turbo.json
@@ -30,13 +31,13 @@ Anilyst/
 
 ## Tech stack
 
-| Layer | Stack |
-|-------|--------|
-| Frontend | Next.js 15, TypeScript, Tailwind CSS |
-| Backend | Express, TypeScript, Prisma |
-| Data | PostgreSQL, Redis |
-| Catalog | AniList GraphQL |
-| Tooling | Turborepo, pnpm, Docker |
+| Layer    | Stack                                   |
+| -------- | --------------------------------------- |
+| Frontend | Next.js 15, TypeScript, Tailwind CSS    |
+| Backend  | Express, TypeScript, Prisma             |
+| Data     | PostgreSQL, Redis                       |
+| Catalog  | AniList GraphQL                         |
+| Tooling  | Turborepo, pnpm, Docker, GitHub Actions |
 
 ## Prerequisites
 
@@ -57,8 +58,8 @@ docker compose up -d
 pnpm dev
 ```
 
-| App | URL |
-|-----|-----|
+| App | URL                   |
+| --- | --------------------- |
 | Web | http://localhost:3000 |
 | API | http://localhost:4000 |
 
@@ -71,27 +72,27 @@ cp apps/web/.env.example apps/web/.env.local
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start web + api in watch mode |
-| `pnpm build` | Build all packages and apps |
-| `pnpm lint` | Lint the workspace |
-| `pnpm typecheck` | Type-check the workspace |
-| `pnpm format` | Format with Prettier |
+| Command          | Description                   |
+| ---------------- | ----------------------------- |
+| `pnpm dev`       | Start web + api in watch mode |
+| `pnpm build`     | Build all packages and apps   |
+| `pnpm lint`      | Lint the workspace            |
+| `pnpm typecheck` | Type-check the workspace      |
+| `pnpm format`    | Format with Prettier          |
 
 ## Development roadmap
 
-| Phase | Focus |
-|-------|--------|
-| 0 | Monorepo foundation (current) |
-| 1 | Auth + backend API + AniList client |
-| 2 | Frontend shell + design system |
-| 3 | Anime catalog (search / discovery / detail) |
-| 4 | User library (watchlist, ratings, progress) |
-| 5 | Recommendations |
-| 6–10 | Social, analytics, AI, polish, deploy |
+| Phase | Focus                                       |
+| ----- | ------------------------------------------- |
+| 0     | Monorepo foundation (**complete**)          |
+| 1     | Auth + backend API + AniList client         |
+| 2     | Frontend shell + design system              |
+| 3     | Anime catalog (search / discovery / detail) |
+| 4     | User library (watchlist, ratings, progress) |
+| 5     | Recommendations                             |
+| 6–10  | Social, analytics, AI, polish, deploy       |
 
-See `Anilyst_Monorepo_Project_Roadmap.pdf` for the full plan.
+See [`plan.md`](plan.md) for the product vision and delivery plan. See `Anilyst_Monorepo_Project_Roadmap.pdf` for the original detailed roadmap.
 
 ## License
 
