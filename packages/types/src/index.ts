@@ -8,6 +8,16 @@ export interface User {
   updatedAt: string;
 }
 
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  tokens: AuthTokens;
+}
+
 export interface AnimeSummary {
   id: number;
   title: string;
@@ -33,4 +43,9 @@ export interface WatchListEntry {
 export interface ApiHealth {
   status: "ok" | "degraded";
   timestamp: string;
+}
+
+export interface ApiError {
+  message: string;
+  code: string;
 }

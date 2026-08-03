@@ -1,14 +1,24 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  email: z.string().email(),
-  username: z.string().min(3).max(32),
-  password: z.string().min(8).max(128),
+  email: z.string().trim().email("Enter a valid email"),
+  username: z
+    .string()
+    .trim()
+    .min(3, "Username must be at least 3 characters")
+    .max(32, "Username must be at most 32 characters"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(128, "Password must be at most 128 characters"),
 });
 
 export const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8).max(128),
+  email: z.string().trim().email("Enter a valid email"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(128, "Password must be at most 128 characters"),
 });
 
 export const watchStatusSchema = z.enum([
