@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum WatchStatus {
+  WATCHING
+  COMPLETED
+  DROPPED
+  PAUSED
+  PLAN_TO_WATCH
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trackedAnime TrackedAnime[]
+}
+
+model TrackedAnime {
+  id         String      @id @default(cuid())
+  userId     String
+  anilistId  Int
+  status     WatchStatus
+  progress   Int         @default(0)
+  score      Int?
+  notes      String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, anilistId])
+}
