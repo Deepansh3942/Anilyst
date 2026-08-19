@@ -1,159 +1,126 @@
-# Turborepo starter
+# Anilyst
 
-This Turborepo starter is maintained by the Turborepo core team.
+Track the anime you watch, browse the full catalog, and get personalized recommendations — all in one place.
 
-## Using this example
+Anilyst is a personal anime-tracking app. You keep a list of anime with a status (Watching, Completed, Dropped, Paused, Plan to Watch), record your progress and score, and discover new titles. Anime metadata comes from the [AniList API](https://anilist.gitbook.io/anilist-apiv2-docs/) — the database only stores your account and your tracked entries.
 
-Run the following command:
+> **Status:** Early development. The monorepo, database, and schema are set up. App features are being built in phases (see the roadmap below).
 
-```sh
-npx create-turbo@latest
+---
+
+## Tech stack
+
+- **Monorepo:** [Turborepo](https://turbo.build/) + [pnpm workspaces](https://pnpm.io/workspaces)
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router) + TypeScript
+- **Database:** [PostgreSQL](https://www.postgresql.org/) on [Neon](https://neon.tech/)
+- **ORM:** [Prisma 7](https://www.prisma.io/)
+- **Anime data:** AniList GraphQL API
+
+## Project structure
+
+```
+anilyst/
+├── apps/
+│   └── web/              # Next.js app (UI + API routes)
+├── packages/
+│   ├── db/               # Prisma schema, client, and migrations
+│   ├── ui/               # Shared React components
+│   ├── eslint-config/    # Shared ESLint config
+│   └── typescript-config/# Shared tsconfig
+├── turbo.json
+├── pnpm-workspace.yaml
+└── package.json
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## Prerequisites
 
-### Apps and Packages
+- **Node.js** 20 or newer
+- **pnpm** 9 or newer (`npm install -g pnpm`)
+- A **PostgreSQL** database (a free [Neon](https://neon.tech/) project works well)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Quick start
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+```bash
+# 1. Clone the repo
+git clone https://github.com/Deepansh3942/Anilyst.git
+cd Anilyst
 
-### Utilities
+# 2. Install dependencies
+pnpm install
 
-This Turborepo has some additional tools already setup for you:
+# 3. Set up your environment
+cp packages/db/.env.example packages/db/.env
+# then open packages/db/.env and paste your database connection string
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+# 4. Create the database tables
+cd packages/db
+pnpm exec prisma migrate dev
+cd ../..
 
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+# 5. Start the dev server
+pnpm dev
 ```
 
-Without global `turbo`, use your package manager:
+The app runs at [http://localhost:3000](http://localhost:3000).
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+---
+
+## Environment variables
+
+Set these in `packages/db/.env`. Never commit this file — it is already git-ignored.
+
+| Variable       | Description                                      | Required |
+|----------------|--------------------------------------------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string (Neon pooled URL)   | Yes      |
+
+An example `DATABASE_URL` from Neon looks like:
+
+```
+postgresql://<user>:<password>@<host>-pooler.<region>.aws.neon.tech/<db>?sslmode=require
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Database
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+The schema lives in `packages/db/prisma/schema.prisma`. Two models:
 
-```sh
-turbo build --filter=docs
+- **User** — a person using Anilyst (id, email, name, timestamps).
+- **TrackedAnime** — one anime a user is tracking. Stores the AniList ID (not the title or artwork — those are fetched from AniList), plus status, progress, score, and notes.
+
+Useful commands (run from `packages/db`):
+
+```bash
+pnpm exec prisma migrate dev     # create/apply migrations in development
+pnpm exec prisma generate        # regenerate the Prisma client
+pnpm exec prisma studio          # open a visual database browser
 ```
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Roadmap
 
-### Develop
+**Phase 1 — Core tracking (in progress)**
+- [ ] Authentication (sign in)
+- [ ] Search AniList for a title
+- [ ] Add an anime to your list
+- [ ] "My List" page filtered by status, with progress editing
 
-To develop all apps and packages, run the following command:
+**Phase 2 — Catalog browse & search**
+- [ ] Trending, seasonal, and popular pages
+- [ ] Genre filtering
+- [ ] Anime detail pages
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+**Phase 3 — Recommendations**
+- [ ] Rule-based recommendations from your highly-rated anime
 
-```sh
-cd my-turborepo
-turbo dev
-```
+**Phase 4 — Social, analytics & AI**
+- [ ] Activity feed and following
+- [ ] Watch-time and genre dashboards
+- [ ] AI-powered search and recommendations
 
-Without global `turbo`, use your package manager:
+---
 
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
+## License
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+Personal project. All rights reserved (for now).
