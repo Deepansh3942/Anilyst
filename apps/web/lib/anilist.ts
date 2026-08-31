@@ -11,30 +11,45 @@ export interface AnimeSearchResult {
   genres: string[];
 }
 
+const MEDIA_FIELDS = `
+  id
+  title { romaji english native }
+  coverImage { large }
+  format
+  episodes
+  seasonYear
+  averageScore
+  genres
+`;
+
 const SEARCH_QUERY = `
 query ($search: String) {
   Page(page: 1, perPage: 12) {
     media(search: $search, type: ANIME, sort: SEARCH_MATCH) {
-      id
-      title { romaji english native }
-      coverImage { large }
-      format
-      episodes
-      seasonYear
-      averageScore
-      genres
+      ${MEDIA_FIELDS}
     }
   }
 }
 `;
 
-export async function searchAnime(search: string): Promise<AnimeSearchResult[]> {
-  if (!search.trim()) return [];
+const RECOMMENDED_QUERY = `
+query ($page: Int) {
+  Page(page: $page, perPage: 24) {
+    pageInfo {
+      hasNextPage
+    }
+    media(type: ANIME, sort: SCORE_DESC, isAdult: false) {
+      ${MEDIA_FIELDS}
+    }
+  }
+}
+`;
 
+async function anilistFetch(query: string, variables?: Record<string, unknown>) {
   const res = await fetch(ANILIST_ENDPOINT, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ query: SEARCH_QUERY, variables: { search } }),
+    body: JSON.stringify({ query, variables }),
     cache: "no-store",
   });
 
@@ -42,6 +57,38 @@ export async function searchAnime(search: string): Promise<AnimeSearchResult[]> 
     throw new Error(`AniList request failed: ${res.status}`);
   }
 
-  const json = await res.json();
+  return res.json();
+}
+
+export async function searchAnime(search: string): Promise<AnimeSearchResult[]> {
+  if (!search.trim()) return [];
+
+  const json = await anilistFetch(SEARCH_QUERY, { search });
   return json.data?.Page?.media ?? [];
+}
+
+export async function fetchRecommendedAnime(page = 1): Promise<{
+  media: AnimeSearchResult[];
+  hasNextPage: boolean;
+}> {
+  const json = await anilistFetch(RECOMMENDED_QUERY, { page });
+  const pageData = json.data?.Page;
+  return {
+    media: pageData?.media ?? [],
+    hasNextPage: pageData?.pageInfo?.hasNextPage ?? false,
+  };
+}
+
+export function resolveEpisodeCount(media: {
+  episodes: number | null;
+  nextAiringEpisode?: { episode: number } | null;
+}): { total: number | null; ongoing: boolean } {
+  if (media.episodes != null && media.episodes > 0) {
+    return { total: media.episodes, ongoing: false };
+  }
+  const next = media.nextAiringEpisode?.episode;
+  if (next != null && next > 1) {
+    return { total: next - 1, ongoing: true };
+  }
+  return { total: null, ongoing: true };
 }

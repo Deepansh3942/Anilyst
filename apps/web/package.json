@@ -14,6 +14,7 @@
     "@auth/prisma-adapter": "^2.11.3",
     "@repo/db": "workspace:*",
     "@repo/ui": "workspace:*",
+    "motion": "^13.1.1",
     "next": "16.3.0",
     "next-auth": "5.0.0-beta.32",
     "react": "^19.2.0",
