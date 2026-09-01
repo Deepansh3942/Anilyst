@@ -46,6 +46,7 @@ export async function trackAnime(
     create: { userId: user.id, anilistId, status, progress: data.progress ?? 0 },
   });
 
+  revalidatePath("/");
   revalidatePath("/my-list");
   revalidatePath("/search");
 }
@@ -81,6 +82,7 @@ export async function updateEpisodeProgress(
     data: { progress: capped, status },
   });
 
+  revalidatePath("/");
   revalidatePath("/my-list");
   revalidatePath("/search");
 
@@ -94,6 +96,7 @@ export async function untrackAnime(anilistId: number) {
     where: { userId: user.id, anilistId },
   });
 
+  revalidatePath("/");
   revalidatePath("/my-list");
   revalidatePath("/search");
 }
