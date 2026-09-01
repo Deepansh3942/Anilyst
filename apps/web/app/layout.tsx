@@ -5,6 +5,14 @@ import BottomNav from "./components/BottomNav";
 export const metadata: Metadata = {
   title: "Anilyst",
   description: "Your personal anime tracker",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     title: "Anilyst",
