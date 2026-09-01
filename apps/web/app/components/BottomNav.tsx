@@ -21,7 +21,9 @@ export default function BottomNav() {
             : pathname === href || pathname.startsWith(href + "/");
         return (
           <Link key={href} href={href} className={active ? "active" : ""}>
-            <Icon />
+            <span className="bottom-nav-icon">
+              <Icon />
+            </span>
             <span>{label}</span>
           </Link>
         );

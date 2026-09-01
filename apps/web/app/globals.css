@@ -91,7 +91,7 @@ input, button, select, textarea {
   max-width: 640px;
   margin: 0 auto;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
+  padding-bottom: calc(58px + env(safe-area-inset-bottom) + 32px);
 }
 
 /* ──────────────────────────────────────
@@ -100,14 +100,21 @@ input, button, select, textarea {
 
 .bottom-nav {
   position: fixed;
-  left: 0; right: 0; bottom: 0;
-  height: calc(var(--nav-height) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 380px;
+  height: 58px;
   display: flex;
-  background: rgba(11, 11, 22, 0.82);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  backdrop-filter: blur(20px) saturate(1.4);
-  border-top: 1px solid rgba(37, 37, 64, 0.6);
+  background: rgba(30, 30, 45, 0.55);
+  -webkit-backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+  backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   z-index: 50;
 }
 
@@ -117,9 +124,10 @@ input, button, select, textarea {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   font-size: 10px;
   font-weight: 500;
+  line-height: 1;
   letter-spacing: 0.02em;
   color: var(--muted);
   transition: color 0.3s var(--ease-out);
@@ -128,16 +136,17 @@ input, button, select, textarea {
 .bottom-nav a.active {
   color: var(--accent);
 }
-/* Glow dot under active tab */
-.bottom-nav a.active::after {
-  content: "";
-  position: absolute;
-  bottom: 2px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: var(--accent-glow);
+.bottom-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 28px;
+  border-radius: 100px;
+  transition: background 0.3s var(--ease-out);
+}
+.bottom-nav a.active .bottom-nav-icon {
+  background: rgba(255, 255, 255, 0.14);
 }
 .bottom-nav svg {
   width: 22px;
@@ -177,11 +186,22 @@ input, button, select, textarea {
   gap: 8px;
   padding: 12px 16px 16px;
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   background: rgba(6, 6, 15, 0.88);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   z-index: 10;
+}
+
+.search-bar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: env(safe-area-inset-top, 0px);
+  background: rgba(6, 6, 15, 0.96);
+  pointer-events: none;
 }
 
 .search-bar input {
@@ -637,7 +657,7 @@ input, button, select, textarea {
   left: 16px;
   right: 16px;
   top: auto;
-  bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 12px);
+  bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 32px);
   min-width: 0;
   z-index: 90;
   border-radius: var(--radius-lg);
