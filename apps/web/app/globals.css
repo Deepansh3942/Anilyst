@@ -191,6 +191,7 @@ input, button, select, textarea {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   color: var(--text);
+  caret-color: var(--accent);
   outline: none;
   transition: border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
 }
