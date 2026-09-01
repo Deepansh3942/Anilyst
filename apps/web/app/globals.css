@@ -90,7 +90,8 @@ input, button, select, textarea {
   min-height: 100dvh;
   max-width: 640px;
   margin: 0 auto;
-  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 20px);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
 }
 
 /* ──────────────────────────────────────
